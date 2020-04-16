@@ -1,0 +1,15 @@
+.Error {
+    background: rgba(red, .005);
+    text-align: center;
+    padding: 20px 10px 10px;
+
+    &__title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    &__message {
+        font-size: 12px;
+        font-style: italic;
+    }
+}
