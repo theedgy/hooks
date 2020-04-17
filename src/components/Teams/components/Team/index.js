@@ -20,10 +20,10 @@ export const Team = ({
             <button
                 type="button"
                 className={`Team-link${current ? ' active' : ''}`}
-                name={`#${team.shortName}`}
+                name={team.shortName}
                 onClick={() => onTeamSelect(team.id)}
             >
-                {`${team.name}`}
+                ${team.name}
             </button>
         </p>
     );

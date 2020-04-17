@@ -8,10 +8,14 @@ export const apiConnection = async (endpoint = "", data = null) => {
         ? `https://api.football-data.org/v2/${endpoint}?${paramStringify(data)}`
         : `https://api.football-data.org/v2/${endpoint}`;
 
+    if (!process.env.REACT_APP_API_KEY) {
+        throw Error('env variable REACT_APP_API_KEY not provided')
+    }
+
     return await fetch(url, {
         method: "GET",
         headers: {
-            "X-Auth-Token": process.env.REACT_APP_API_KEY || ""
+            "X-Auth-Token": process.env.REACT_APP_API_KEY
         }
     })
         .then(r => r.json())

@@ -1,14 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {apiConnection} from '../../services/apiConnection';
-import {addTeamStats} from '../../store/teams/actions';
-import {Loading} from '../Loading';
-import {AppContext} from "../../store";
+import React, { useContext, useEffect, useState } from 'react';
+import { apiConnection } from '../../services/apiConnection';
+import { addTeamStats } from '../../store/teams/actions';
+import { Loading } from '../Loading';
+import { AppContext } from '../../store';
 
 import './index.scss';
 
 export const Statistics = () => {
     const [status, setStatus] = useState('idle');
-    const {state, dispatch} = useContext(AppContext);
+    const { state, dispatch } = useContext(AppContext);
     let foundTeam = null;
 
     const current = state?.current;
@@ -38,51 +38,41 @@ export const Statistics = () => {
         setStatus('loading');
 
         apiConnection(`teams/${current}/matches?status=FINISHED`)
-            .then(r => r.json())
             .then(r => {
-                    if (!!dispatch) {
-                        dispatch(addTeamStats(r.matches, current));
-                        setStatus('idle');
-                    }
+                    dispatch(addTeamStats(r.matches, current));
+                    setStatus('idle');
                 },
-            ).catch(error => setStatus(`${error}`));
+            );
 
-    }, [teams, current, foundTeam]);
+    }, [teams, current, foundTeam, dispatch]);
 
     return (
-        <div className="Statistics app-panel">
+        <section className="Statistics app-panel">
             <h2>Statistics {!!teams?.length && foundTeam && 'stats' in
             foundTeam && `for ${foundTeam.name}`}</h2>
 
-            {teams?.length === 0 &&
+            {!!teams?.length &&
             <Loading message={'Waiting for teams load'} />}
 
             {status === 'loading' &&
             <Loading message={`Downloading ${foundTeam?.name} data`} />}
 
-            {
-                !current && !!teams?.length && (
-                    <p><i>Please select team to display information</i></p>
-                )}
+            {!current && !!teams?.length && (
+                <p><i>Please select team to display information</i></p>
+            )}
 
-            {
-                !!teams?.length && foundTeam && 'stats' in foundTeam && (
-                    <table className="Statistics__list">
-                        <tbody>
-
-                        {
-                            foundTeam?.stats?.map(stat => {
-                                return (
-                                    <tr key={stat.id} className="draw">
-                                        <td>({stat.competition.name})</td>
-                                        <td>{stat.homeTeam.name} {stat.score.fullTime.homeTeam} - {stat.score.fullTime.awayTeam} {stat.awayTeam.name}</td>
-                                    </tr>);
-                            })
-                        }
-                        </tbody>
-                    </table>
-                )
-            }
-        </div>
+            {!!teams.length && foundTeam && 'stats' in foundTeam && (
+                <table className="Statistics__list">
+                    <tbody>
+                    {foundTeam.stats.map(match => (
+                        <tr key={match.id}>
+                            <td>({match.competition.name})</td>
+                            <td>{match.homeTeam.name} {match.score.fullTime.homeTeam} - {match.score.fullTime.awayTeam} {match.awayTeam.name}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            )}
+        </section>
     );
 };
