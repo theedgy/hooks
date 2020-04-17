@@ -1,44 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { apiConnection } from '../../services/apiConnection';
-import { Error } from '../Error';
-import { Loading } from '../Loading';
 import { AppContext } from '../../store';
 import { Team } from './components/Team';
+import { Loading } from '../Loading';
+import { apiConnection } from '../../services/apiConnection';
 import { addTeams } from '../../store/teams/actions';
 import './index.scss';
 
-const defaultStatus = 'idle';
-
 export const Teams = () => {
-    const [status, setStatus] = useState(defaultStatus);
+    const [status, setStatus] = useState('idle');
 
-    const { state, dispatch } = useContext(AppContext);
-    // Need that type of conditional for
-    // typescript to stop yelling about
-    // undefined context value possible
-    const teams = state?.teams;
-    const current = state?.current;
+    const { state: { teams }, dispatch } = useContext(AppContext);
 
     useEffect(() => {
-        // Return if data exists in store or is already requesting for it
-        if ((teams && !!teams.length) || status === 'success') {
+        // Do nothing when request is in progress or teams already stored
+        if (teams || status === 'loading') {
             return;
         }
 
         setStatus('loading');
 
-        apiConnection('competitions/2021/teams')
-            .then(response => {
-                    if (!!response.errorCode) {
-                        setStatus(`${response.errorCode} : ${response.message}`);
-                        return;
-                    }
-
-                    dispatch(addTeams(response.teams));
-                    setStatus('success');
-                },
-            );
-    }, [teams]);
+        apiConnection('competitions/2021/teams').then(r => {
+            dispatch(addTeams(r.teams));
+            setStatus('success');
+        });
+    }, [teams, status]);
 
     return (
         <section className="Teams app-panel">
@@ -47,16 +32,10 @@ export const Teams = () => {
             {(status === 'loading') &&
             <Loading message="Loading Teams..." />}
 
-            {!['idle', 'loading', 'success'].includes(status) && (
-                <Error message={status} />
-            )}
-
-            {!!teams.length && (
+            {teams && (
                 <div className="Team__list">
                     {teams.map(team => (
-                        <Team key={team.id}
-                              team={team}
-                              current={current === team.id} />
+                        <Team key={team.id} team={team} />
                     ))}
                 </div>
             )}

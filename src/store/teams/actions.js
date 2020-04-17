@@ -1,14 +1,13 @@
-import { Actions } from '../index';
+export const ADD_TEAM_STATS = 'ADD_TEAM_STATS';
+export const ADD_TEAMS = 'ADD_TEAMS';
 
-export const addTeamStats = (stats, id) => {
-    return ({
-        type: Actions.ADD_TEAM_STATS,
-        stats,
-        id
-    });
-}
+export const addTeamStats = (stats, id) => ({
+    type: ADD_TEAM_STATS,
+    stats,
+    id,
+});
 
 export const addTeams = teams => ({
-    type: Actions.ADD_TEAMS,
+    type: ADD_TEAMS,
     teams,
 });

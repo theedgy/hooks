@@ -1,11 +1,11 @@
-import { Actions } from '../index';
+import { SET_CURRENT_TEAM } from './actions';
 
-export const currentReducer = (state = 0, action) => {
+export const currentReducer = (state = null, action) => {
     switch (action.type) {
-        case Actions.SET_CURRENT_TEAM:
-            return action.teamId;
+    case SET_CURRENT_TEAM:
+        return action.teamId;
 
-        default:
-            return state;
+    default:
+        return state;
     }
 };

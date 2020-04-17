@@ -3,27 +3,22 @@ import { AppContext } from '../../../../store';
 import { setCurrentTeam } from '../../../../store/current/actions';
 import './index.scss';
 
-export const Team = ({
-    team,
-    current = false,
-}) => {
-    const { dispatch } = useContext(AppContext);
+export const Team = ({team}) => {
 
-    const onTeamSelect = id => {
-        dispatch(setCurrentTeam(id));
-    };
+    const { state: {current}, dispatch } = useContext(AppContext);
 
     return (
         <p className="Team">
-            <img src={team.crestUrl} alt={`#${team.shortName}`} />
+            <img src={team.crestUrl}
+                 alt={team.shortName} />
 
             <button
                 type="button"
                 className={`Team-link${current ? ' active' : ''}`}
                 name={team.shortName}
-                onClick={() => onTeamSelect(team.id)}
+                onClick={() => dispatch(setCurrentTeam(team.id))}
             >
-                ${team.name}
+                {team.name}
             </button>
         </p>
     );
