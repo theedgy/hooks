@@ -14,7 +14,7 @@ export const Team = ({team}) => {
 
             <button
                 type="button"
-                className={`Team-link${current ? ' active' : ''}`}
+                className={`Team-link${current === team.id ? ' active' : ''}`}
                 name={team.shortName}
                 onClick={() => dispatch(setCurrentTeam(team.id))}
             >

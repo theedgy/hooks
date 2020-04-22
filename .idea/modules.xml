@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/hooks.iml" filepath="$PROJECT_DIR$/.idea/hooks.iml" />
       <module fileurl="file://$PROJECT_DIR$/../post/.idea/post.iml" filepath="$PROJECT_DIR$/../post/.idea/post.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../redux/.idea/redux.iml" filepath="$PROJECT_DIR$/../redux/.idea/redux.iml" />
     </modules>
   </component>
 </project>

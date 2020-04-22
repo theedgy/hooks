@@ -40,8 +40,7 @@ export const Statistics = () => {
 
     return (
         <section className="Statistics app-panel">
-            <h2>Statistics {teams && foundTeam && 'stats' in
-            foundTeam && `for ${foundTeam.name}`}</h2>
+            <h2>Statistics</h2>
 
             {!teams &&
             <Loading message={'Waiting for teams load'} />}
@@ -52,8 +51,7 @@ export const Statistics = () => {
             {teams && (
                 !current
                     ? <p><i>Please select team to display information</i></p>
-                    : foundTeam && 'stats' in foundTeam && (
-                    <table className="Statistics__list">
+                    : <table className="Statistics__list">
                         <tbody>
                         {foundTeam.stats.map(match => (
                             <tr key={match.id}>
@@ -63,7 +61,6 @@ export const Statistics = () => {
                         ))}
                         </tbody>
                     </table>
-                )
             )}
         </section>
     );
