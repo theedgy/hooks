@@ -8,7 +8,6 @@ import './index.scss';
 
 export const Teams = () => {
     const [status, setStatus] = useState('idle');
-
     const { state: { teams }, dispatch } = useContext(AppContext);
 
     useEffect(() => {
@@ -23,7 +22,7 @@ export const Teams = () => {
             dispatch(addTeams(r.teams));
             setStatus('success');
         });
-    }, [teams, status]);
+    }, [teams, status, dispatch]);
 
     return (
         <section className="Teams app-panel">

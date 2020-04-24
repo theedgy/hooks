@@ -7,23 +7,25 @@ import './index.scss';
 
 export const Statistics = () => {
     const [status, setStatus] = useState('idle');
+    const [currentTeam, setCurrentTeam] = useState(null);
     const { state, dispatch } = useContext(AppContext);
 
     const current = state.current;
     const teams = state.teams;
 
-    const foundTeam = teams && current &&
-        teams.find(team => team.id === current);
+    useEffect(() => {
+        const found = teams && current &&
+            teams.find(team => team.id === current);
+
+        if (found && found !== currentTeam) {
+            setCurrentTeam(found);
+        }
+    }, [current, currentTeam, teams]);
 
     useEffect(() => {
         if (!current
             || status === 'loading'
-            || (foundTeam && 'stats' in foundTeam)) {
-            return;
-        }
-
-        if (!teams) {
-            setStatus('loading');
+            || (currentTeam && 'stats' in currentTeam)) {
             return;
         }
 
@@ -36,7 +38,7 @@ export const Statistics = () => {
                 },
             );
 
-    }, [current, foundTeam, status, teams]);
+    }, [current, currentTeam, dispatch, status, teams]);
 
     return (
         <section className="Statistics app-panel">
@@ -46,14 +48,14 @@ export const Statistics = () => {
             <Loading message={'Waiting for teams load'} />}
 
             {status === 'loading' &&
-            <Loading message={`Downloading ${foundTeam.name} data`} />}
+            <Loading message={`Downloading ${currentTeam.name} data`} />}
 
             {teams && (
                 !current
                     ? <p><i>Please select team to display information</i></p>
                     : <table className="Statistics__list">
                         <tbody>
-                        {foundTeam.stats.map(match => (
+                        {currentTeam.stats.map(match => (
                             <tr key={match.id}>
                                 <td>({match.competition.name})</td>
                                 <td>{match.homeTeam.name} {match.score.fullTime.homeTeam} - {match.score.fullTime.awayTeam} {match.awayTeam.name}</td>

@@ -5,6 +5,8 @@ export const teamsReducer = (state = [], action) => {
     case ADD_TEAMS:
         return [...state, ...action.teams];
 
+
+
     case ADD_TEAM_STATS:
         const newState = [...state];
         let found = newState.find(team => team.id === action.id);
