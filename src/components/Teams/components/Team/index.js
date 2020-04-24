@@ -4,7 +4,6 @@ import { setCurrentTeam } from '../../../../store/current/actions';
 import './index.scss';
 
 export const Team = ({team}) => {
-
     const { state: {current}, dispatch } = useContext(AppContext);
 
     return (

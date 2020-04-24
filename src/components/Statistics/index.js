@@ -8,10 +8,7 @@ import './index.scss';
 export const Statistics = () => {
     const [status, setStatus] = useState('idle');
     const [currentTeam, setCurrentTeam] = useState(null);
-    const { state, dispatch } = useContext(AppContext);
-
-    const current = state.current;
-    const teams = state.teams;
+    const { state: {teams, current}, dispatch } = useContext(AppContext);
 
     useEffect(() => {
         const found = teams && current &&
@@ -37,7 +34,6 @@ export const Statistics = () => {
                     setStatus('idle');
                 },
             );
-
     }, [current, currentTeam, dispatch, status, teams]);
 
     return (
